@@ -10,14 +10,17 @@ def hello():
 def name(name):
     return f"Hello {name}"
 
-@app.route('/square', methods=['GET'])
+@app.route('/square', methods=['GET', 'POST'])
 def squarenumber():
-    if request.method == 'GET':
-        if(request.args.get('num') == None):
-            return render_template('form.html')
-        elif(request.args.get('num') == ''):
+    if request.method == 'POST':
+        if(request.form['num'] == ''):
             return render_template('invalid_number.html')
         else:
-            number = request.args.get('num')
+            number = request.form['num']
             sq = int(number) * int(number)
             return render_template('response.html', square_of_num=sq, num=number)
+    if request.method == 'GET':
+        return render_template('form.html')
+    
+if __name__ == "__main__":
+    app.run()
