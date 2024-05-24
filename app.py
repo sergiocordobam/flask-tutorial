@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
@@ -6,9 +6,24 @@ app = Flask(__name__)
 def hello():
     return "Hello World"
 
+@app.route("/admin")
+def admin():
+    return "Hello admin"
+
+@app.route("/guest/<guest>")
+def guest(guest):
+    return f"Hello {guest} as guest"
+
+@app.route("/user/<name>")
+def user(name):
+    if name == "admin":
+        return redirect(url_for('admin'))
+    else:
+        return redirect(url_for('guest', guest=name))
+
 @app.route("/<name>")
 def name(name):
-    return f"Hello {name}"
+    return f"Hello {name}!"
 
 @app.route('/square', methods=['GET', 'POST'])
 def squarenumber():
