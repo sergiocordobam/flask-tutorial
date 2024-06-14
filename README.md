@@ -141,7 +141,7 @@ upstream flaskhelloworld {
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
-    server_name your_EC2_public_IP_address;
+    server_name <your_EC2_public_IP_address>;
 
     location / {
         proxy_pass http://flaskhelloworld;
