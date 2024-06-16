@@ -1,22 +1,42 @@
-# Deploy a Flask app on AWS step by step
-# Using Docker and Docker-compose
+# Deploy a Flask app on AWS step by step, using Docker and Docker Compose
 - Create a new EC2 instance using Ubuntu
 - Allow HTTP and HTTPS traffic
 
 ## 1. Install and update the required packages
 - Connect by SSH to your EC2 instance and run the following command:
+- Update your package list:
 
 ```bash
-sudo apt-get update && sudo apt-get upgrade
+sudo apt-get update && sudo apt-get upgrade -y
 ```
 
-- Install the Python Virtual Environment package:
+- Install Docker dependencies:
 
 ```bash
-sudo apt-get install python3-venv
+sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+sudo apt-get update
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 ```
 
-## 2. Clone your GitHub project and set up the virtual environment
+- Install Docker Compose:
+
+```bash
+sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+```
+
+- Close your EC2 SSH instance shell and connect again
+- Verify Docker and Docker Compose installations:
+
+ ```bash
+docker --version
+docker-compose --version
+``` 
+
+## 2. Clone your GitHub project
 
 - In my case I'm using a project called **"Flask-tutorial"**
 - Then, navigate to the main folder of the project:
@@ -25,98 +45,26 @@ sudo apt-get install python3-venv
 git clone https://github.com/sergiocordobam/flask-tutorial.git
 cd flask-tutorial
 ```
-- Create a virtual environment:
+- Start Docker service
 
 ```bash
-python3 -m venv venv
+sudo systemctl start docker
 ```
 
-- Activate the virtual environment:
+## 3. Build and run the Docker container using Docker Compose
 
+- Build and start the app using Docker Compose:
+ 
 ```bash
-source venv/bin/activate
+sudo docker-compose up --build -d
 ```
 
-## 3. Install flask
-
-```bash
-pip install Flask
-```
-
-- Verify that the Flask app is running:
-
-```bash
-python app.py
-```
-
-## 4. Run Gunicorn WSGI Server
-
-- Install Gunicorn:
-
-```bash
-pip install gunicorn
-```
-
-- Serve the Flask app using Gunicorn:
-
-```bash
-gunicorn -b 0.0.0.0:8000 app:app
-```
-
-- Exit from Gunicorn using `Ctrl + C`
-
-## 5. Manage systemd
-
-- Create a systemd file:
-
-```bash
-sudo nano /etc/systemd/system/<service_name>.service
-```
-
-- In my case, the command is:
-
-```bash
-sudo nano /etc/systemd/system/helloworld.service
-```
-
-- Paste the following content into the systemd file:
-
-```bash
-[Unit]
-Description=Gunicorn instance for a simple hello world app
-After=network.target
-
-[Service]
-User=ubuntu
-Group=www-data
-WorkingDirectory=/home/ubuntu/flask-tutorial
-ExecStart=/home/ubuntu/flask-tutorial/venv/bin/gunicorn -b localhost:8000 app:app
-Restart=always
-
-[Install]
-WantedBy=multi-user.target
-```
-
-- Now you can enable and start the service:
-
-```bash
-sudo systemctl daemon-reload
-sudo systemctl start helloworld
-sudo systemctl enable helloworld
-```
-
-- Check if your app is running:
-
-```bash
-curl localhost:8000
-```
-
-## 6. Set up Nginx
+## 4. Set up Nginx
 
 - Install Nginx:
 
 ```bash
-sudo apt-get install nginx
+sudo apt-get install nginx -y
 ```
 
 - Start and enable the Nginx service:
@@ -171,6 +119,30 @@ server {
 sudo systemctl restart nginx
 ```
 
-## 7. Access to your EC2 instance:
+## 5. Access to your EC2 instance:
 
 - You should be able to see your Flask app when accessing to the public IP address.
+
+# Update your app
+
+- Push changes to your GitHub repository
+- Connect to your EC2 instance (SSH)
+- Navigate to your project folder:
+
+```bash
+cd flask-tutorial
+```
+
+- Pull changes from GitHub:
+
+```bash
+git pull origin main
+```
+
+- Rebuild and restart your Docker container using Docker Compose:
+
+```bash
+sudo docker-compose up --build -d
+```
+
+- Finally, check the changes by accessing to your EC2 instance public IP
