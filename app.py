@@ -37,5 +37,9 @@ def squarenumber():
     if request.method == 'GET':
         return render_template('form.html')
     
+@app.route("/example")
+def example():
+    return "Hello this is a new change"
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)
