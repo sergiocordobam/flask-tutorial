@@ -1,4 +1,5 @@
 # Deploy a Flask app on AWS step by step
+# Using Docker and Docker-compose
 - Create a new EC2 instance using Ubuntu
 - Allow HTTP and HTTPS traffic
 
