@@ -3,8 +3,8 @@ from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__)
 
 @app.route("/")
-def hello():
-    return "Hello World"
+def home():
+    return render_template('home.html')
 
 @app.route("/admin")
 def admin():
@@ -28,7 +28,7 @@ def name(name):
 @app.route('/square', methods=['GET', 'POST'])
 def squarenumber():
     if request.method == 'POST':
-        if(request.form['num'] == ''):
+        if request.form['num'] == '':
             return render_template('invalid_number.html')
         else:
             number = request.form['num']
@@ -40,6 +40,25 @@ def squarenumber():
 @app.route("/example")
 def example():
     return "Hello this is a new change"
+
+@app.route("/cdt", methods=['GET', 'POST'])
+def cdt():
+    if request.method == 'POST':
+        if request.form['initial_amount'] == '' or request.form['annual_interest_rate'] == '' or request.form['years'] == '' or request.form['compounding_frequency'] == '':         
+            return render_template('invalid_cdt.html')
+        else:
+            initial_amount = float(request.form['initial_amount'])
+            annual_interest_rate = float(request.form['annual_interest_rate'])
+            years = int(request.form['years'])
+            compounding_frequency = int(request.form['compounding_frequency'])
+
+            rate = annual_interest_rate / 100
+            total_amount = initial_amount * (1 + rate / compounding_frequency) ** (compounding_frequency * years)
+            profit = total_amount - initial_amount
+
+            return render_template('response_cdt.html', total_amount=total_amount, profit=profit)
+    if request.method == 'GET':
+        return render_template('cdt.html')
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)
