@@ -145,4 +145,4 @@ git pull origin main
 sudo docker-compose up --build -d
 ```
 
-- Finally, check the changes by accessing to your EC2 instance public IP
+- Finally, check the changes by accessing to your EC2 instance public IP.
