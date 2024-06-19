@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %} User {% endblock title %}
+{% block content %}
+<div class="d-flex vh-100 flex-column justify-content-center align-items-center">
+    <p>Please enter the user:</p>
+    <br>
+    <form action="#" method="POST">
+        <div class="input-group mb-3">
+            <input type="text" name="name" id="name" class="form-control" placeholder="Name" aria-label="" aria-describedby="basic-addon2">
+        </div>
+        <div class="input-group-append">
+            <input class="btn btn-outline-secondary" type="submit" name="submit" id="submit" value="Send">
+        </div>
+    </form>
+</div>
+{% endblock content %}  

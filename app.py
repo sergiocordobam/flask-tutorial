@@ -8,22 +8,25 @@ def home():
 
 @app.route("/admin")
 def admin():
-    return "Hello admin"
+    return render_template('admin.html')
 
 @app.route("/guest/<guest>")
 def guest(guest):
-    return f"Hello {guest} as guest"
+    return render_template('guest.html', name=guest)
 
-@app.route("/user/<name>")
+@app.route("/user/<name>", methods=['GET', 'POST'])
 def user(name):
-    if name == "admin":
-        return redirect(url_for('admin'))
-    else:
-        return redirect(url_for('guest', guest=name))
-
-@app.route("/<name>")
-def name(name):
-    return f"Hello {name}!"
+    if request.method == 'POST':
+        if request.form['name'] == "":
+            return render_template('invalid_user.html')
+        else:
+            name = request.form['name']
+            if name == "admin":
+                return redirect(url_for('admin'))
+            else:
+                return redirect(url_for('guest', guest=name))
+    if request.method == 'GET':
+        return render_template('user.html')
 
 @app.route('/square', methods=['GET', 'POST'])
 def squarenumber():
@@ -36,10 +39,6 @@ def squarenumber():
             return render_template('response.html', square_of_num=sq, num=number)
     if request.method == 'GET':
         return render_template('form.html')
-    
-@app.route("/example")
-def example():
-    return "Hello this is a new change"
 
 @app.route("/cdt", methods=['GET', 'POST'])
 def cdt():
