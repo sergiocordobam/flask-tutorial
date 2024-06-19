@@ -1,15 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form</title>
-</head>
-<body>
-    <p>Please enter a number</p>
-    <form action="#" method="POST">
-        <input type="text" name="num" id="num">
-        <input type="submit" name="submit" id="submit">
-    </form>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %} Form {% endblock title %}
+{% block content %}
+<div class="d-flex vh-100 flex-column justify-content-center align-items-center">
+  <p class="h3 mb-2">Please enter a number:</p>
+  <br>
+  <form action="#" method="POST">
+      <!--<input type="text" name="num" id="num">-->
+      <!--<input type="submit" name="submit" id="submit">-->
+
+      <div class="input-group mb-3">
+          <input type="text" name="num" id="num" class="form-control" placeholder="Number" aria-label="" aria-describedby="basic-addon2">
+          <div class="input-group-append">
+            <input class="btn btn-outline-secondary" type="submit" name="submit" id="submit" value="Send">
+          </div>
+      </div>
+  </form>
+</div>
+{% endblock content %}

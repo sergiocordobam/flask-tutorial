@@ -1,17 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-</head>
-<body>
-    <p>Welcome to the Home Page</p>
-     <form action="/square" method="GET">
-        <input type="submit" value="Calculate Square">
-    </form>
+{% extends "base.html" %}
+{% block title %} Home Page {% endblock title %}
+{% block content %}
+<div class="d-flex vh-100 flex-column justify-content-center align-items-center">
+    <p class="h3 mb-2">Welcome to the Home Page</p>
     <br>
-    <form action="/cdt" method="GET">
-        <input type="submit" value="CDT Calculator">
+    <form action="/square" method="GET" class="mb-2">
+        <!--<input type="submit" value="Calculate Square">-->
+        <div class="input-group">
+            <input class="btn btn-outline-secondary" type="submit" value="Calculate Square">
+        </div>
     </form>
-</html>
+    <form action="/cdt" method="GET">
+        <!--<input type="submit" value="CDT Calculator">-->
+        <div class="input-group">
+            <input class="btn btn-outline-secondary" type="submit" value="CDT Calculator">
+        </div>
+    </form>
+</div>
+{% endblock content %}

@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Response CDT</title>
-</head>
-<body>
-    <h1>Your total amount is {{total_amount}} and your profit is {{profit}}</h1>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %} Response CDT {% endblock title %}
+{% block content %}
+<div class="d-flex vh-100 flex-column justify-content-center align-items-center">
+    <p class="h3">Your total amount is {{total_amount}} and your profit is {{profit}}</p>
+</div>
+{% endblock content %}

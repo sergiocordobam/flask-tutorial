@@ -1,21 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %} Form {% endblock title%}
+{% block content %}
+<div class="d-flex vh-100 flex-column justify-content-center align-items-center">
+    <p class="h3">Please enter the CDT information:</p>
+    <br>
     <form action="#" method="POST">
-        <p>Initial ammount:</p>
-        <input type="text" name="initial_amount" id="initial_amount">
-        <p>Annual interest rate:</p>
-        <input type="text" name="annual_interest_rate" id="annual_interest_rate">
-        <p>Years:</p>
-        <input type="text" name="years" id="years">
-        <p>Compounding frequency:</p>
-        <input type="text" name="compounding_frequency" id="compounding_frequency">
-        <input type="submit" name="submit" id="submit">
+        <!--<p>Initial ammount:</p>-->
+        <!--<input type="text" name="initial_amount" id="initial_amount">-->
+        <div class="input-group mb-3">
+            <input type="text" name="initial_amount" id="initial_amount" class="form-control" placeholder="Initial ammount" aria-label="" aria-describedby="basic-addon2">
+        </div>
+        <!--<p>Annual interest rate:</p>-->
+        <!--<input type="text" name="annual_interest_rate" id="annual_interest_rate">-->
+        <div class="input-group mb-3">
+            <input type="text" name="annual_interest_rate" id="annual_interest_rate" class="form-control" placeholder="Annual interest rate" aria-label="" aria-describedby="basic-addon2">
+        </div>
+        <!--<p>Years:</p>-->
+        <!--<input type="text" name="years" id="years">-->
+        <div class="input-group mb-3">
+            <input type="text" name="years" id="years" class="form-control" placeholder="Years" aria-label="" aria-describedby="basic-addon2">
+        </div>
+        <!--<p>Compounding frequency:</p>-->
+        <!--<input type="text" name="compounding_frequency" id="compounding_frequency">-->
+        <div class="input-group mb-3">
+            <input type="text" name="compounding_frequency" id="compounding_frequency" class="form-control" placeholder="Compounding frequency" aria-label="" aria-describedby="basic-addon2">
+        </div>
+        <!--<input type="submit" name="submit" id="submit">-->
+        <div class="input-group-append">
+            <input class="btn btn-outline-secondary" type="submit" name="submit" id="submit" value="Send">
+        </div>
     </form>
-</body>
-</html>
+</div>
+{% endblock content %}

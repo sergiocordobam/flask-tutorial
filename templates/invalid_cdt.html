@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invalid input</title>
-</head>
-<body>
-    <p>Please enter a valid input</p>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %} Invalid input {% endblock title %}
+{% block content %}
+<div class="d-flex vh-100 flex-column justify-content-center align-items-center">
+    <p class="h3">Please enter a valid input</p>
+</div>
+{% endblock content %}
