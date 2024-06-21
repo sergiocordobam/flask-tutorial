@@ -1,6 +1,26 @@
 from flask import Flask, render_template, request, redirect, url_for
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://flaskuser:flaskpassword@mysql/flaskdb'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+
+class CDT(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    initial_amount = db.Column(db.Float, nullable=False)
+    annual_interest_rate = db.Column(db.Float, nullable=False)
+    years = db.Column(db.Integer, nullable=False)
+    compounding_frequency = db.Column(db.Integer, nullable=False)
+    total_amount = db.Column(db.Float, nullable=True)
+    profit = db.Column(db.Float, nullable=True)
+
+    def __repr__(self):
+        return f"CDT('{self.initial_amount}', '{self.annual_interest_rate}', '{self.years}', '{self.compounding_frequency}', '{self.total_amount}', '{self.profit}')"
+
+with app.app_context():
+    db.create_all()
 
 @app.route("/")
 def home():
@@ -54,6 +74,10 @@ def cdt():
             rate = annual_interest_rate / 100
             total_amount = initial_amount * (1 + rate / compounding_frequency) ** (compounding_frequency * years)
             profit = total_amount - initial_amount
+
+            new_cdt = CDT(initial_amount=initial_amount, annual_interest_rate=annual_interest_rate, years=years, compounding_frequency=compounding_frequency, total_amount=total_amount, profit=profit)
+            db.session.add(new_cdt)
+            db.session.commit()
 
             return render_template('response_cdt.html', total_amount=total_amount, profit=profit)
     if request.method == 'GET':

@@ -1,8 +1,29 @@
 version: '3'
 services:
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: flaskdb
+      MYSQL_USER: flaskuser
+      MYSQL_PASSWORD: flaskpassword
+      MYSQL_ROOT_PASSWORD: rootpassword
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
   flask-app:
     build: .
     ports:
       - "8000:8000"
     volumes:
       - .:/app
+    environment:
+      FLASK_APP: app.py
+      FLASK_ENV: development
+      DATABASE_URI: mysql+pymysql://flaskuser:flaskpassword@mysql/flaskdb  # Database URI for Flask app
+    depends_on:
+      - mysql
+
+volumes:
+  mysql-data:
