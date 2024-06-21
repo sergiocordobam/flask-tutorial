@@ -216,6 +216,19 @@ with app.app_context():
     db.create_all()
 ```
 
+- In your EC2 instance run this command:
+
+```bash
+cd <your_project_folder>
+git pull origin main
+```
+
+- Build the Docker image:
+
+```bash
+sudo docker-compose up --build -d
+```
+
 # MySQL
 
 - If you want to connect to the database, install the mysql-client:
