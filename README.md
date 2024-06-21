@@ -147,6 +147,99 @@ sudo docker-compose up --build -d
 
 - Finally, check the changes by accessing to your EC2 instance public IP.
 
+# Database
+
+- Install SQLAlchemy packages:
+
+```bash
+pip install sqlalchemy flask-sqlalchemy pymysql
+```
+
+- Update your packages requirements:
+
+```bash
+pip freeze > requirements.txt 
+``` 
+  
+- Add the following content to your `requirements.txt` file:
+
+```bash
+cryptography==3.4.8
+```
+
+- Update your `docker-compose.yml` file:
+
+```bash
+version: '3'
+services:
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: <db_name>
+      MYSQL_USER: <user> 
+      MYSQL_PASSWORD: <password>
+      MYSQL_ROOT_PASSWORD: <rootpassword>
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  flask-app:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      FLASK_APP: app.py
+      FLASK_ENV: development
+    depends_on:
+      - mysql
+
+volumes:
+  mysql-data:
+```
+
+- Add the following lines of code to your `app.py` file:
+
+```bash
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://flaskuser:flaskpassword@mysql/flaskdb'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+```
+
+- Create the model and then add this chunk of code below the model:
+
+```bash
+with app.app_context():
+    db.create_all()
+```
+
+# MySQL
+
+- If you want to connect to the database, install the mysql-client:
+
+```bash
+sudo apt update
+sudo apt install mysql-client
+```
+
+- Verify installation:
+
+```bash
+mysql --version
+```
+
+- Connect to the database:
+
+```bash
+mysql -u flaskuser -p -h 127.0.0.1
+```
+
+- Enter your password
+- Check your EC2 instance
+
 # Bootstrap
 
 - Add Bootstrap to your Flask app:
